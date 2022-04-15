@@ -21,5 +21,4 @@ async function runMessage(message: any) {
     }
 }
 
-
 main()

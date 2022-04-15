@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 const app = express()
 app.use(bodyParser.json());
-const port = 3000
+const port = 3002
 
 var shipments: any[] = []
 var organizations: any[] = []
@@ -97,7 +97,7 @@ app.post('/organization', (req: any, res: any) => {
  * @returns boolean indicating if it was inserted (true) or updated (false)
  */
 function addOrganization(organization: any) {
-  const existingOrgIndex = organizations.findIndex(org => org.id === organization.id)
+  const existingOrgIndex = organizations.findIndex(org => org.id == organization.id)
   const isNew = existingOrgIndex === -1
 
   if (isNew) {
@@ -127,13 +127,27 @@ function updateShipmentsOrganizationCode(oldOrgCode: any, newOrgCode: any) {
 /** Get shipment */
 
 app.get('/shipments/:shipmentId', (req: any, res: any) => {
-  res.send("Hello World");
+  const shipment = shipments.find(ship => ship.referenceId === req.params.shipmentId)
+  if (shipment === undefined) {
+    res.status(404)
+       .send(`No shipment found with reference ID \"${req.params.shipmentId}\"`)
+  }
+
+  res.status(200)
+     .send(shipment)
 })
 
 /** Get Organization */
 
 app.get('/organizations/:organizationId', (req: any, res: any) => {
-  res.send("Hello World");
+  const organization = organizations.find(org => org.id === req.params.organizationId)
+  if (organization === undefined) {
+    res.status(404)
+       .send(`No organization found with ID \"${req.params.organizationId}\"`)
+  }
+
+  res.status(200)
+     .send(organization)
 })
 
 app.listen(port, () => {

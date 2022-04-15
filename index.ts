@@ -38,7 +38,6 @@ app.post('/shipment', async (req: any, res: any) => {
        .send(message)
 
   } catch (e) {
-    console.log(e)
     res.status(500)
        .send("Failed to add the shipment. Please try again.")
   }
@@ -56,7 +55,7 @@ function getInvalidShipmentOrganizationCodes(shipment: any) {
  * @returns boolean indicating if it was inserted (true) or updated (false)
  */
 function addShipment(shipment: any) {
-  const existingShipmentIndex = shipments.findIndex(s => shipment.referenceId = s.referenceId)
+  const existingShipmentIndex = shipments.findIndex(s => shipment.referenceId == s.referenceId)
   const isNew = existingShipmentIndex === -1
 
   if (isNew) {
@@ -87,7 +86,6 @@ app.post('/organization', (req: any, res: any) => {
     res.status(200)
        .send(message)
   } catch (e) {
-    console.log(e)
     res.status(500)
        .send("Failed to add the shipment. Please try again.")
   }
@@ -141,4 +139,3 @@ app.get('/organizations/:organizationId', (req: any, res: any) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
-  

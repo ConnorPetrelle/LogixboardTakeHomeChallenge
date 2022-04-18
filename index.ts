@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 const app = express()
 app.use(bodyParser.json());
-const port = 3002
+const port = 3000
 
 var shipments: any[] = []
 var organizations: any[] = []
@@ -101,7 +101,7 @@ function addOrganization(organization: any) {
   const isNew = existingOrgIndex === -1
 
   if (isNew) {
-    organizations.push(organizations)
+    organizations.push(organization)
   } else {
     updateShipmentsOrganizationCode(organizations[existingOrgIndex].code, organization.code)
     organizations[existingOrgIndex] = organization

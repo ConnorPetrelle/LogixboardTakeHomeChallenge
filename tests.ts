@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const HOST = "http://localhost:3002"
+const HOST = "http://localhost:3000"
 
 async function main() {
   try {
@@ -72,7 +72,7 @@ async function testGetOrganizationSuccess() {
     console.log("*** GET ORGANIZATION SUCCESS TEST ***")
 
     const guid = "34f195b5-2aa1-4914-85ab-f8849f9b541a"
-    const expectedOrganization =   {
+    const expectedOrganization = {
       "type": "ORGANIZATION",
       "id": guid,
       "code": "FMT"
@@ -101,7 +101,5 @@ async function testGetOrganizationDoesNotExist() {
 
     console.log("******\n")
 }
-
-
 
 main()

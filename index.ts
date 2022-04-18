@@ -1,3 +1,4 @@
+import weightToPounds from "./models/weightToPounds";
 import { ORGANIZATION_TYPE } from "./models/organizationInterface";
 import { SHIPMENT_TYPE } from "./models/shipmentInterface";
 
@@ -149,6 +150,46 @@ app.get('/organizations/:organizationId', (req: any, res: any) => {
   res.status(200)
      .send(organization)
 })
+
+/** Get aggregate weight */
+
+app.get('/weight/:unit', (req: any, res: any) => {
+  let unit = req.params.unit.toUpperCase()
+
+  if (weightToPounds[unit] === undefined) {
+    res.status(400)
+       .send("Invalid unit. Expected one of the following: " + Object.keys(weightToPounds))
+  }
+
+  res.status(200)
+     .send({
+      'unit': unit,
+      'weight': getAggregateWeight(unit)
+     })
+
+})
+
+function getAggregateWeight(unit: string) {
+  return getAggregateWeightInPounds() / weightToPounds[unit]
+}
+
+function getAggregateWeightInPounds() {
+  let aggregateWeightInPounds = 0;
+  shipments.forEach(shipment => {
+    const nodes: any[] = shipment.transportPacks.nodes
+    nodes.forEach(node => {
+      const weight = Number(node.totalWeight.weight)
+      const unit = node.totalWeight.unit
+      const poundsInUnit = weightToPounds[unit]
+      if (poundsInUnit != undefined) {
+        const weightInPounds = weight * poundsInUnit
+        aggregateWeightInPounds += weightInPounds
+      }
+    })
+  })
+
+  return aggregateWeightInPounds;
+}
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
